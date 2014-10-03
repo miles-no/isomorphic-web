@@ -1,6 +1,8 @@
 'use strict';
 
-var express = require('express');
+var express = require('express'),
+    React = require('react'),
+    mainComponent = require('./.tmp/app/components/main');
 
 var app = express();
 app.set('view engine', 'ejs');
@@ -8,7 +10,7 @@ app.use('/assets', express.static('./.tmp/assets'));
 
 app.get('/', function (req, res) {
   res.render('index', {
-    markup: '<h1>Goodbye Angular!</h1>'
+    markup: React.renderComponentToString(mainComponent())
   });
 });
 
