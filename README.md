@@ -1,5 +1,7 @@
 ## Example of an Isomorphic App using ReactJS
 
+(Note: A bug is left intentionally in there...)
+
 ### Quick Start
 
 To have the application up an running in no time, follow the next few steps:
