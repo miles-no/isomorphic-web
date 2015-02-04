@@ -1,17 +1,24 @@
 'use strict';
+require('dotenv').load();
+require('node-jsx').install({extension: '.jsx'});
 
 var express = require('express'),
     React = require('react'),
-    resolveRoot = require('./resolveRoot'),
-    mainComponent = require(resolveRoot('./app/components/main'));
+    mainComponent = React.createFactory(require('./app/components/Main.jsx'));
 
 var app = express();
 app.set('view engine', 'ejs');
-app.use('/assets', express.static(resolveRoot('./assets')));
+
+app.use(require('./middleware/locals'));
+
+app.use('/assets', express.static('./public/assets'));
+if(process.env.NODE_ENV !== 'production'){
+  app.use('/assets', express.static('./.tmp/public/assets'));
+}
 
 app.get('/', function (req, res) {
   res.render('index', {
-    markup: React.renderComponentToString(mainComponent())
+    markup: React.renderToString(mainComponent())
   });
 });
 

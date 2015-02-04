@@ -1,8 +1,7 @@
-/** @jsx React.DOM */
 'use strict';
 
 var React = require('react'),
-    clock = require('./clock');
+    Clock = require('./Clock.jsx');
 
 module.exports = React.createClass({
 
@@ -20,7 +19,7 @@ module.exports = React.createClass({
     return (
       <div>
         <h1>Hello Future!</h1>
-        <clock time={this.state.time} />
+        <Clock time={this.state.time} />
         <button onClick={this.handleClick}>Click Me</button>
       </div>
     );

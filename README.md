@@ -1,22 +1,25 @@
 ## Example of an Isomorphic App using ReactJS
 
-### Quickstart
+### Quick Start
 
-Ensure that you have [node.js](http://nodejs.org/) installed on your machine.
-Clone this repository and navigate into the `isomorphic-web` folder (or whatever folder you cloned it into).
+To have the application up an running in no time, follow the next few steps:
 
-We use [Grunt](http://gruntjs.com/) as the task runner, so make sure you have the [grunt-cli](https://www.npmjs.org/package/grunt-cli) installed. If not, install it globally with `npm install -g grunt-cli`
+1. Install [node.js](http://nodejs.org/)
+2. Install [Gulp](http://gulpjs.com/): `npm install -g gulp`
+3. Install all dependencies: `npm install`
+4. Create file `.env` in the project root folder. Example `.env` file:
 
-Run `npm install` to install all dependencies used by this application.
+        BASE_URL=
+
+5. Start application by running `gulp`
+6. Access application on http://localhost:3000
 
 ### Tools
+Some of the major tools used are:
 
-* [Grunt](http://gruntjs.com/) as the task runner
-* [browserify](http://browserify.org/) for bundling scripts for the browser, and enabling code sharing between client and server
-* [grunt-react](https://www.npmjs.org/package/grunt-react) for compiling React's JSX templates into JavaScript
+* [Gulp](http://gulpjs.com/) as the task runner
+* [Browserify](http://browserify.org/) for bundling scripts for the browser, and enabling code sharing between client and server
 * [SASS](http://sass-lang.com/) for CSS preprosessing
-* [UglifyJS](https://github.com/mishoo/UglifyJS) for compressing JavaScript for the browser
-* [JSXHint](https://www.npmjs.org/package/jsxhint) for linting the JavaScript
 * [BrowserSync](http://www.browsersync.io/) for serving synchronized browser testing
 
-All tools are configured in the `Gruntfile.js` and will run transparently when `grunt` is started.
+All tools are configured in the `Gulpfile.js` and will run transparently when `gulp` is started.

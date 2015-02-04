@@ -3,10 +3,10 @@
   <head>
     <meta charset='utf-8'/>
     <title>Isomorphic Web</title>
-    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="stylesheet" href="<%= baseUrl + '/assets/main-' + appVersion + '.min.css' %>">
   </head>
   <body>
     <div id="app-container"><%- markup %></div>
-    <script src="/assets/bundle.min.js"></script>
+    <script src="<%= baseUrl + '/assets/bundle-' + appVersion + '.min.js' %>"></script>
   </body>
 </html>
