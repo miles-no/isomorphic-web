@@ -25,3 +25,14 @@ Some of the major tools used are:
 * [BrowserSync](http://www.browsersync.io/) for serving synchronized browser testing
 
 All tools are configured in the `Gulpfile.js` and will run transparently when `gulp` is started.
+
+### Use as a starting point
+
+    mkdir my-app
+    cd my-app
+    git clone https://github.com/miles-no/isomorphic-web.git .
+    rm -rf .git
+    git init
+    git add -A
+    git commit -m 'Initial commit'
+    npm install
