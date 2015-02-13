@@ -12,7 +12,7 @@ var gulp = require('gulp'),
     buffer = require('vinyl-buffer'),
     gutil = require('gulp-util'),
     browserSync = require('browser-sync'),
-    runSequence = require('run-sequence'),
+    runSequence = require('run-sequence').use(gulp),
     $ = require('gulp-load-plugins')({
       rename: {
         'gulp-minify-css': 'minifyCSS',
