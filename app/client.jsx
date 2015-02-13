@@ -1,8 +1,17 @@
 'use strict';
 
 var React = require('react'),
-    MainComponent = require('./components/Main.jsx');
+    app = require('./app.jsx');
 
-window.addEventListener('load', function () {
-  React.render(<MainComponent />, document.getElementById('app-container'));
+app.rehydrate(window.__dehydratedState, function (err, context) {
+  if (err) {
+    throw err;
+  }
+
+  var appComponent = app.getAppComponent(),
+      mountNode = document.getElementById('app-container');
+
+  React.withContext(context.getComponentContext(), function () {
+    React.render(appComponent(), mountNode);
+  });
 });

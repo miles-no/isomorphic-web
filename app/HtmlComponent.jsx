@@ -14,6 +14,7 @@ var Html = React.createClass({
         <body>
           <div id="app-container" dangerouslySetInnerHTML={{__html: this.props.markup}}></div>
         </body>
+        <script dangerouslySetInnerHTML={{__html: this.props.state}}></script>
         <script src={this.props.baseUrl + '/assets/bundle-' + this.props.appVersion + '.min.js'} defer></script>
       </html>
     );

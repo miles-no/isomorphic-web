@@ -1,26 +1,30 @@
 'use strict';
 
 var React = require('react'),
-    Clock = require('./Clock.jsx');
+    ApplicationStore = require('../stores/ApplicationStore'),
+    RouterMixin = require('flux-router-component').RouterMixin,
+    FluxibleMixin = require('fluxible').Mixin;
 
 module.exports = React.createClass({
+  mixins: [RouterMixin, FluxibleMixin],
 
-  getInitialState: function () {
-    return {
-      time: Date.now()
-    };
+  statics: {
+    storeListeners: [ApplicationStore]
   },
 
-  handleClick: function () {
-    this.setState({time: Date.now()});
+  getInitialState: function () {
+    return this.getStore(ApplicationStore).getState();
+  },
+
+  onChange: function () {
+    var state = this.getStore(ApplicationStore).getState();
+    this.setState(state);
   },
 
   render: function () {
     return (
       <div>
         <h1>Hello Future!</h1>
-        <Clock time={this.state.time} />
-        <button onClick={this.handleClick}>Click Me</button>
       </div>
     );
   }
