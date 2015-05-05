@@ -54,7 +54,7 @@ function ifTaskName(tasks) {
 gulp.task('default', function (done) {
   runSequence(['sass', 'browserify'], 'serve', function () {
     gulp.watch('./app/**/*.scss', ['sass']);
-    gulp.watch(['./**/*.+(js|jsx)', '!./node_modules/**', '!./.tmp/**'], ['lint']);
+    gulp.watch(['./*.js', './app/**/*.+(js|jsx)'], ['lint']);
     done();
   });
 });
@@ -107,7 +107,7 @@ gulp.task('serve:dist', ['build'], function () {
 });
 
 gulp.task('lint', function () {
-  return gulp.src(['./**/*.+(js|jsx)', '!./node_modules/**', '!./dist/**'])
+  return gulp.src(['./*.js', './app/**/*.+(js|jsx)'])
     .pipe($.react({errLogToConsole: true}))
     .pipe($.jshint('.jshintrc'))
     .pipe($.jshint.reporter('jshint-stylish'))
