@@ -2,7 +2,7 @@
   "name": "isomorphic-web",
   "version": "0.2.1",
   "engines": {
-    "node": "0.10.x"
+    "node": "0.12.x"
   },
   "description": "",
   "main": "server.js",
