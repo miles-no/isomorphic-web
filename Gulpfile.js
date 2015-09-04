@@ -5,7 +5,6 @@ var gulp = require('gulp'),
     fs = require('fs'),
     del = require('del'),
     merge = require('merge'),
-    semver = require('semver'),
     browserify = require('browserify'),
     watchify = require('watchify'),
     source = require('vinyl-source-stream'),
@@ -15,9 +14,7 @@ var gulp = require('gulp'),
     runSequence = require('run-sequence').use(gulp),
     $ = require('gulp-load-plugins')({
       rename: {
-        'gulp-minify-css': 'minifyCSS',
-        'gulp-tag-version': 'tagVersion',
-        'gulp-gh-pages': 'deploy'
+        'gulp-minify-css': 'minifyCSS'
       }
     }),
     argv = require('yargs').argv;
@@ -43,7 +40,6 @@ var config = {
   debug: ifTaskName(['default', 'serve']),
   serve: ifTaskName(['default', 'serve']),
   env: argv.env || (ifTaskName(['push-dist', 'release']) ? 'prod' : 'stage'),
-  increment: argv.inc || 'patch',
   dryRun: argv.dryrun || false
 };
 
@@ -168,31 +164,6 @@ gulp.task('copy', function(){
 
   return gulp.src(files, {base: './'})
     .pipe(gulp.dest('dist'));
-});
-
-gulp.task('bump', function () {
-  var pkg = getPackageJson(),
-      newVer = semver.inc(pkg.version, config.increment);
-
-  return gulp.src('./package.json')
-    .pipe($.bump({version: newVer}))
-    .pipe(gulp.dest('./'))
-    .pipe($.if(!config.dryRun, $.git.commit('Bumped version to v' + newVer + (config.increment === 'major' ? '. Hooray!' : ''))))
-    .pipe($.if(!config.dryRun, $.tagVersion()));
-});
-
-gulp.task('push-dist', function () {
-  return gulp.src('./dist/**/*.*')
-    .pipe($.deploy({
-      branch: config.env,
-      push: !config.dryRun,
-      cacheDir: './.deploy-cache',
-      message: 'Release v' + getPackageJson().version + ' to ' + config.env
-    }));
-});
-
-gulp.task('release', false, function (done) {
-  runSequence('bump', 'build', 'push-dist', done);
 });
 
 function logNodemon(data) {
