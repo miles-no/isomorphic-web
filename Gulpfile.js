@@ -39,8 +39,7 @@ var config = {
   assetsFolder: ifTaskName(['default', 'serve']) ? TMP : DIST,
   debug: ifTaskName(['default', 'serve']),
   serve: ifTaskName(['default', 'serve']),
-  env: argv.env || (ifTaskName(['push-dist', 'release']) ? 'prod' : 'stage'),
-  dryRun: argv.dryrun || false
+  env: argv.env || (ifTaskName(['push-dist', 'release']) ? 'prod' : 'stage')
 };
 
 function ifTaskName(tasks) {
@@ -65,7 +64,7 @@ gulp.task('build', function (done) {
 gulp.task('serve', function () {
   $.nodemon({
     script: 'srv.js',
-    ext: 'ejs js jsx',
+    ext: 'js jsx',
     ignore: ['.tmp/**', 'dist/**', 'node_modules/**'],
     nodeArgs: ['--debug'],
     env: {
@@ -112,7 +111,7 @@ gulp.task('lint', function () {
 gulp.task('sass', function () {
   return gulp.src('./app/scss/main.scss')
     .pipe($.if(config.debug, $.sourcemaps.init()))
-    .pipe($.sass({errLogToConsole: true, imagePath: process.env.BASE_URL}))
+    .pipe($.sass({errLogToConsole: true, imagePath: process.env.BASE_URL, precision: 8}))
     .pipe($.autoprefixer({browsers: config.autoprefixer.browsers}))
     .pipe($.if(!config.debug, $.minifyCSS()))
     .pipe($.ver({suffix: ['min']}))
