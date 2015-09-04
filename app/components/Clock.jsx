@@ -1,9 +1,7 @@
-'use strict';
+import React from 'react';
 
-var React = require('react');
-
-module.exports = React.createClass({
-  render: function () {
+export default class Clock extends React.Component {
+  render() {
     return <div>{this.props.time}</div>;
   }
-});
+}
