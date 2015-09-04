@@ -1,37 +1,36 @@
-'use strict';
-require('dotenv').load();
-require('babel/register');
+/* global process */
+import express from 'express';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import React from 'react';
+import HtmlComponent from './app/HtmlComponent.jsx';
+import MainComponent from './app/components/Main.jsx';
+import pkg from './package.json';
 
-var express = require('express'),
-    bodyParser = require('body-parser'),
-    cookieParser = require('cookie-parser'),
-    pkg = require('./package.json'),
-    React = require('react'),
-    HtmlComponent = React.createFactory(require('./app/HtmlComponent.jsx')),
-    MainComponent = React.createFactory(require('./app/components/Main.jsx'));
+const Html = React.createFactory(HtmlComponent);
+const Main = React.createFactory(MainComponent);
+const isProduction = process.env.NODE_ENV === 'production';
+const assetPath = isProduction ? './public/assets' : './.tmp/public/assets';
 
-var app = express();
+const app = express();
 
-app.use('/assets', express.static('./public/assets'));
-if(process.env.NODE_ENV !== 'production'){
-  app.use('/assets', express.static('./.tmp/public/assets'));
-}
+app.use('/assets', express.static(assetPath));
 app.use(cookieParser());
 app.use(bodyParser.json());
 
-app.use(function (req, res, next) {
-  var html = React.renderToStaticMarkup(new HtmlComponent({
+app.use((req, res, next) => {
+  var html = React.renderToStaticMarkup(new Html({
     appVersion: pkg.version,
     baseUrl: process.env.BASE_URL || '',
     title: 'Isomorphic Web',
-    markup: React.renderToString(new MainComponent())
+    markup: React.renderToString(new Main())
   }));
 
   res.send(html);
 });
 
-var server = app.listen(process.env.PORT || 8000, function() {
-  console.log('Listening on port %d', server.address().port);
+const server = app.listen(process.env.PORT || 8000, () => {
+  console.log(`Listening on port ${server.address().port}`);
 });
 
-module.exports = server;
+export default server;
