@@ -124,7 +124,7 @@ gulp.task('sass', function () {
 
 gulp.task('browserify', function() {
   var bundler = browserify('./app/client.jsx', {debug: config.debug})
-    .transform(require('reactify'))
+    .transform(require('babelify'))
     .transform(require('envify'))
     .on('log', function (msg) {
       gutil.log(gutil.colors.yellow('[Browserify]'), msg);

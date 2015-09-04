@@ -1,6 +1,6 @@
 'use strict';
 require('dotenv').load();
-require('node-jsx').install({extension: '.jsx'});
+require('babel/register');
 
 var express = require('express'),
     bodyParser = require('body-parser'),
