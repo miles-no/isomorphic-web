@@ -1,8 +1,6 @@
-'use strict';
+import React from 'react';
+import MainComponent from './components/Main.jsx';
 
-var React = require('react'),
-    MainComponent = require('./components/Main.jsx');
-
-window.addEventListener('load', function () {
+window.addEventListener('load', () => {
   React.render(<MainComponent />, document.getElementById('app-container'));
 });
