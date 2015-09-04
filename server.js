@@ -9,7 +9,10 @@ import pkg from './package.json';
 
 const Html = React.createFactory(HtmlComponent);
 const Main = React.createFactory(MainComponent);
+
 const isProduction = process.env.NODE_ENV === 'production';
+const baseUrl = process.env.BASE_URL || '';
+const port = process.env.PORT || 8000;
 const assetPath = isProduction ? './public/assets' : './.tmp/public/assets';
 
 const app = express();
@@ -21,7 +24,7 @@ app.use(bodyParser.json());
 app.use((req, res, next) => {
   var html = React.renderToStaticMarkup(new Html({
     appVersion: pkg.version,
-    baseUrl: process.env.BASE_URL || '',
+    baseUrl: baseUrl,
     title: 'Isomorphic Web',
     markup: React.renderToString(new Main())
   }));
@@ -29,7 +32,7 @@ app.use((req, res, next) => {
   res.send(html);
 });
 
-const server = app.listen(process.env.PORT || 8000, () => {
+const server = app.listen(port, () => {
   console.log(`Listening on port ${server.address().port}`);
 });
 
