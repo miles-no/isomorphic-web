@@ -5,19 +5,18 @@ export default class extends React.Component {
   constructor(props) {
     super(props);
     this.state = { time: Date.now() };
-    this.handleClick = this.handleClick.bind(this);
   }
-  
+
   render() {
     return (
       <div>
         <h1>Hello Future!</h1>
         <Clock time={this.state.time} />
-        <button onClick={this.handleClick}>Click Me</button>
+        <button onClick={() => this.handleClick}>Click Me</button>
       </div>
     );
   }
-  
+
   handleClick() {
     this.setState({time: Date.now()});
   }
