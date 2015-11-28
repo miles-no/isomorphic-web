@@ -63,7 +63,7 @@ gulp.task('build', function (done) {
 
 gulp.task('serve', function () {
   $.nodemon({
-    script: 'srv.js',
+    script: 'index.js',
     ext: 'js jsx',
     ignore: ['.tmp/**', 'dist/**', 'node_modules/**'],
     nodeArgs: ['--debug'],
@@ -88,7 +88,7 @@ gulp.task('serve', function () {
 
 gulp.task('serve:dist', ['build'], function () {
   $.nodemon({
-    script: 'srv.js',
+    script: 'index.js',
     ext: 'ejs js jsx',
     cwd: 'dist',
     nodeArgs: ['--debug'],
