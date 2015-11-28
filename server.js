@@ -13,7 +13,8 @@ const Main = React.createFactory(MainComponent);
 const isProduction = process.env.NODE_ENV === 'production';
 const baseUrl = process.env.BASE_URL || '';
 const port = process.env.PORT || 8000;
-const assetPath = isProduction ? './public/assets' : './.tmp/public/assets';
+const assetBase = isProduction ? '.' : './.tmp';
+const assetPath = `${assetBase}/public/assets`;
 
 const app = express();
 
@@ -22,7 +23,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-  var html = React.renderToStaticMarkup(new Html({
+  let html = React.renderToStaticMarkup(new Html({
     appVersion: pkg.version,
     baseUrl: baseUrl,
     title: 'Isomorphic Web',
