@@ -1,6 +1,8 @@
 import React from 'react';
 import Clock from './Clock.jsx';
 
+import './Main.scss';
+
 export default class extends React.Component {
   constructor(props) {
     super(props);
@@ -9,7 +11,7 @@ export default class extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="main">
         <h1>Hello Future!</h1>
         <Clock time={this.state.time} />
         <button onClick={this.handleClick.bind(this)}>Click Me</button>
