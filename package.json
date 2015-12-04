@@ -46,6 +46,7 @@
     "body-parser": "^1.14.1",
     "express": "^4.11.2",
     "node-sass": "^3.4.2",
-    "react": "^0.13.3"
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3"
   }
 }

@@ -5,6 +5,7 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
 import React from 'react';
+import { renderToString } from 'react-dom/server'
 
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -41,7 +42,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.use((req, res, next) => {
-  let componentHtml = React.renderToString(new Main());
+  let componentHtml = renderToString(new Main());
   res.status(200).end(renderPage(componentHtml));
 });
 
