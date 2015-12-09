@@ -35,7 +35,10 @@ const renderPage = (html) => {
 
 if (process.env.NODE_ENV !== 'production') {
   const compiler = webpack(webpackConfig);
-  app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: webpackConfig.output.publicPath }));
+  app.use(webpackDevMiddleware(compiler, { 
+    noInfo: true, 
+    publicPath: webpackConfig.output.publicPath })
+  );
   app.use(webpackHotMiddleware(compiler));
 } else {
   app.use('/static', express.static(__dirname + '/../dist'));
@@ -47,7 +50,7 @@ app.use((req, res, next) => {
 });
 
 const server = app.listen(3002, () => {
-  const host =server.address().address;
+  const host = server.address().address;
   const port = server.address().port;
   console.log(`Listening at http://${host}:${port}`);
 });

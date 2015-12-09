@@ -37,10 +37,33 @@ var webpackConfig = {
   ]
 };
 
+var babelSettings = {
+  presets: ['react', 'es2015'],
+  env: {
+    development: {
+      plugins: [
+        ['react-transform', {
+          transforms: [
+            { 
+              transform: 'react-transform-hmr',
+              imports: [ 'react'],
+              locals: [ 'module' ]
+            },
+            {
+              transform: 'react-transform-catch-errors',
+              imports: [ 'react', 'redbox-react' ]
+            }
+          ]
+        }]
+      ]
+    }
+  }
+};
+
 if (process.env.NODE_ENV === 'production') {
   webpackConfig = merge(webpackConfig, {
     entry: [
-      './client/client.jsx'
+      './app/client/client.jsx'
     ],
     module: {
       loaders: [
@@ -49,7 +72,11 @@ if (process.env.NODE_ENV === 'production') {
           loader: 'babel', 
           exclude: /node_modules/, 
           query: { 
-            presets: ['react', 'es2015'] 
+            presets: ['react', 'es2015'],
+            plugins: [
+              "transform-react-inline-elements",
+              "transform-react-constant-elements"
+            ] 
           },
           include: __dirname
         },
@@ -66,24 +93,23 @@ if (process.env.NODE_ENV === 'production') {
         }
       }),
       new ExtractTextPlugin('app.css'),
-      new webpack.optimize.UglifyJsPlugin({ minimize: true })
+      new webpack.optimize.UglifyJsPlugin({
+        minimize: true, 
+        compress: { 
+          warnings: false
+        }
+      })
     ]
   });
 } else {
   webpackConfig = merge(webpackConfig, {
     devtool: 'inline-source-map',
     module: {
-      preLoaders: [
-        { test: /\.(js|jsx)$/, loaders: ['eslint'] }
-      ],
       loaders: [
         { 
           test: /\.(js|jsx)$/, 
-          loader: 'babel', 
-          exclude: /node_modules/, 
-          query: { 
-            presets: ['react', 'es2015'] 
-          } 
+          loaders: ['babel?' + JSON.stringify(babelSettings)], 
+          exclude: /node_modules/
         },
         { 
           test: /\.scss$/, 
@@ -93,7 +119,7 @@ if (process.env.NODE_ENV === 'production') {
     },
     entry: [
       'webpack-hot-middleware/client',
-      './client/client.jsx'
+      './app/client/client.jsx'
     ],
     plugins: [
       new webpack.HotModuleReplacementPlugin()
