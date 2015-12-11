@@ -5,7 +5,6 @@ var gulp = require('gulp'),
     fs = require('fs'),
     del = require('del'),
     merge = require('merge'),
-    semver = require('semver'),
     browserify = require('browserify'),
     watchify = require('watchify'),
     source = require('vinyl-source-stream'),
@@ -15,9 +14,7 @@ var gulp = require('gulp'),
     runSequence = require('run-sequence').use(gulp),
     $ = require('gulp-load-plugins')({
       rename: {
-        'gulp-minify-css': 'minifyCSS',
-        'gulp-tag-version': 'tagVersion',
-        'gulp-gh-pages': 'deploy'
+        'gulp-minify-css': 'minifyCSS'
       }
     }),
     argv = require('yargs').argv;
@@ -42,9 +39,7 @@ var config = {
   assetsFolder: ifTaskName(['default', 'serve']) ? TMP : DIST,
   debug: ifTaskName(['default', 'serve']),
   serve: ifTaskName(['default', 'serve']),
-  env: argv.env || (ifTaskName(['push-dist', 'release']) ? 'prod' : 'stage'),
-  increment: argv.inc || 'patch',
-  dryRun: argv.dryrun || false
+  env: argv.env || (ifTaskName(['push-dist', 'release']) ? 'prod' : 'stage')
 };
 
 function ifTaskName(tasks) {
@@ -68,8 +63,8 @@ gulp.task('build', function (done) {
 
 gulp.task('serve', function () {
   $.nodemon({
-    script: 'server.js',
-    ext: 'ejs js jsx',
+    script: 'index.js',
+    ext: 'js jsx',
     ignore: ['.tmp/**', 'dist/**', 'node_modules/**'],
     nodeArgs: ['--debug'],
     env: {
@@ -93,7 +88,7 @@ gulp.task('serve', function () {
 
 gulp.task('serve:dist', ['build'], function () {
   $.nodemon({
-    script: 'server.js',
+    script: 'index.js',
     ext: 'ejs js jsx',
     cwd: 'dist',
     nodeArgs: ['--debug'],
@@ -107,17 +102,16 @@ gulp.task('serve:dist', ['build'], function () {
 });
 
 gulp.task('lint', function () {
-  return gulp.src(['./*.js', './app/**/*.+(js|jsx)'])
-    .pipe($.react({errLogToConsole: true}))
-    .pipe($.jshint('.jshintrc'))
-    .pipe($.jshint.reporter('jshint-stylish'))
-    .pipe($.if(!config.serve, $.jshint.reporter('fail')));
+  return gulp.src(['./**/*.+(js|jsx)', '!./node_modules/**', '!./public/assets/vendor/**', '!./dist/**', '!./spec/**'])
+    .pipe($.eslint())
+    .pipe($.eslint.format())
+    .pipe($.if(!config.serve, $.eslint.failAfterError()));
 });
 
 gulp.task('sass', function () {
   return gulp.src('./app/scss/main.scss')
     .pipe($.if(config.debug, $.sourcemaps.init()))
-    .pipe($.sass({errLogToConsole: true, imagePath: process.env.BASE_URL}))
+    .pipe($.sass({errLogToConsole: true, imagePath: process.env.BASE_URL, precision: 8}))
     .pipe($.autoprefixer({browsers: config.autoprefixer.browsers}))
     .pipe($.if(!config.debug, $.minifyCSS()))
     .pipe($.ver({suffix: ['min']}))
@@ -128,7 +122,7 @@ gulp.task('sass', function () {
 
 gulp.task('browserify', function() {
   var bundler = browserify('./app/client.jsx', {debug: config.debug})
-    .transform(require('reactify'))
+    .transform(require('babelify'))
     .transform(require('envify'))
     .on('log', function (msg) {
       gutil.log(gutil.colors.yellow('[Browserify]'), msg);
@@ -168,31 +162,6 @@ gulp.task('copy', function(){
 
   return gulp.src(files, {base: './'})
     .pipe(gulp.dest('dist'));
-});
-
-gulp.task('bump', function () {
-  var pkg = getPackageJson(),
-      newVer = semver.inc(pkg.version, config.increment);
-
-  return gulp.src('./package.json')
-    .pipe($.bump({version: newVer}))
-    .pipe(gulp.dest('./'))
-    .pipe($.if(!config.dryRun, $.git.commit('Bumped version to v' + newVer + (config.increment === 'major' ? '. Hooray!' : ''))))
-    .pipe($.if(!config.dryRun, $.tagVersion()));
-});
-
-gulp.task('push-dist', function () {
-  return gulp.src('./dist/**/*.*')
-    .pipe($.deploy({
-      branch: config.env,
-      push: !config.dryRun,
-      cacheDir: './.deploy-cache',
-      message: 'Release v' + getPackageJson().version + ' to ' + config.env
-    }));
-});
-
-gulp.task('release', false, function (done) {
-  runSequence('bump', 'build', 'push-dist', done);
 });
 
 function logNodemon(data) {

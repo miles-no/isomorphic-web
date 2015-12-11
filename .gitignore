@@ -6,3 +6,4 @@ dist
 .tmp
 .env
 *.zip
+jsconfig.json
