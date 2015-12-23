@@ -1,5 +1,3 @@
-import React from 'react';
-
 import './Clock.scss';
 
 const Clock = ({ time }) => {

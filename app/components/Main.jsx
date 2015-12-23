@@ -1,12 +1,16 @@
-import React from 'react';
+import { Component } from 'react';
 import Clock from './Clock.jsx';
 
 import './Main.scss';
 
-export default class extends React.Component {
+class Main extends Component {
   constructor(props) {
     super(props);
     this.state = { time: Date.now() };
+  }
+
+  handleClick() {
+    this.setState({time: Date.now()});
   }
 
   render() {
@@ -18,8 +22,6 @@ export default class extends React.Component {
       </div>
     );
   }
-
-  handleClick() {
-    this.setState({time: Date.now()});
-  }
 }
+
+export default Main;
