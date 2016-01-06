@@ -1,8 +1,8 @@
 .DS_Store
 node_modules
 .sass-cache
-.deploy-cache
 dist
-.tmp
-.env
 *.zip
+jsconfig.json
+npm-debug.log
+.vscode

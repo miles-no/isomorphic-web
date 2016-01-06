@@ -1,27 +1,27 @@
-'use strict';
+import { Component } from 'react';
+import Clock from './Clock.jsx';
 
-var React = require('react'),
-    Clock = require('./Clock.jsx');
+import './Main.scss';
 
-module.exports = React.createClass({
+class Main extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { time: Date.now() };
+  }
 
-  getInitialState: function () {
-    return {
-      time: Date.now()
-    };
-  },
-
-  handleClick: function () {
+  handleClick() {
     this.setState({time: Date.now()});
-  },
+  }
 
-  render: function () {
+  render() {
     return (
-      <div>
+      <div className="main">
         <h1>Hello Future!</h1>
         <Clock time={this.state.time} />
-        <button onClick={this.handleClick}>Click Me</button>
+        <button onClick={this.handleClick.bind(this)}>Click Me</button>
       </div>
     );
   }
-});
+}
+
+export default Main;

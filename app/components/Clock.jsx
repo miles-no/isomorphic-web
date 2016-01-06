@@ -1,9 +1,7 @@
-'use strict';
+import './Clock.scss';
 
-var React = require('react');
+const Clock = ({ time }) => {
+  return <div className="clock">{time}</div>;
+};
 
-module.exports = React.createClass({
-  render: function () {
-    return <div>{this.props.time}</div>;
-  }
-});
+export default Clock;
